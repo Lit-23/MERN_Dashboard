@@ -2,15 +2,15 @@
 // import bodyParser from 'body-parser';
 
 import express from 'express';
-// import mongoose from 'mongoose';
+import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import helmet from 'helmet';
 import morgan from 'morgan';
-// import clientRoutes from "./routes/clients.js";
-// import generalRoutes from "./routes/general.js";
-// import managementRoutes from "./routes/management.js";
-// import salesRoutes from "./routes/sales.js";
+import clientRoutes from "./routes/client.js";
+import generalRoutes from "./routes/general.js";
+import managementRoutes from "./routes/management.js";
+import salesRoutes from "./routes/sales.js";
 
 // Configuration
 dotenv.config();
@@ -24,18 +24,22 @@ app.use(morgan("common"));
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
-// Routes
-// app.use("/clients", clientRoutes);
-// app.use("/general", generalRoutes);
-// app.use("/management", managementRoutes);
-// app.use("/sales", salesRoutes);
-
 // MONGOOSE SETUP
-// const PORT = process.env.PORT || 9000;
-// mongoose.connect(process.env.MONGO_URL, {
-//   useNewUR
-// })
+const PORT = process.env.PORT || 9000;
+app.listen(PORT, () => {
+  console.log('Server is listeneng on port 3000!')
+});
 
-// app.listen(3000, () => {
-//   console.log('The server is running on PORT 3000')
-// })
+mongoose.connect(process.env.MONGO_URL)
+  .then(() => {
+    console.log('Connected to MongoDB!');
+  })
+  .catch((err) => {
+    console.log(err);
+});
+
+// Routes
+app.use("/clients", clientRoutes);
+app.use("/general", generalRoutes);
+app.use("/management", managementRoutes);
+app.use("/sales", salesRoutes);
